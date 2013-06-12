@@ -1,0 +1,11 @@
+* text=auto
+
+#Force as text files to normalize line endings
+*.css text
+*.js text
+*.php text diff=php
+*.md text
+
+#Force as binary files
+*.png binary
+
