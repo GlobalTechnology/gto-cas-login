@@ -334,7 +334,6 @@
 			if( is_wp_error( $user_id ) )
 				return null;
 			update_user_meta( $user_id, self::USER_META_GUID, $guid );
-			add_user_to_blog( 1, $user_id, 'subscriber' );
 			return new \WP_User( $user_id );
 		}
 
