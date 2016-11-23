@@ -113,7 +113,7 @@
 
 		public $options = array(
 			'mode'     => self::PROXY,
-			'hostname' => 'CAS_SERVER_HERE',
+			'hostname' => array_key_exists( 'CAS_HOSTNAME', $_SERVER ) ? $_SERVER[ 'CAS_HOSTNAME' ] : 'thekey.me';,
 			'port'     => 443,
 			'uri'      => 'cas',
 		);
