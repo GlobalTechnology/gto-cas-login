@@ -1,7 +1,7 @@
-<?php
+<?php namespace GlobalTechnology\CentralAuthenticationService;
 	define('WP_USE_THEMES', false);
 	require_once( realpath( $_SERVER[ 'DOCUMENT_ROOT' ] . '/wp-load.php' ) );
-	\GlobalTechnology\CentralAuthenticationService\CASLogin::singleton()->get_cas_client()->forceAuthentication();
+	CASLogin::singleton()->get_cas_client()->forceAuthentication();
 ?>
 <html>
 	<head>

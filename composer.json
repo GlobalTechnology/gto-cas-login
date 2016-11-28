@@ -1,0 +1,20 @@
+{
+	"name": "globaltechnology/cas-authentication-service",
+	"description": "CAS Authentication Plugin",
+	"authors": [
+		{
+			"name": "Brian Zoetewey",
+			"email": "brian.zoetewey@ccci.org"
+		}
+	],
+	"require": {
+		"jasig/phpcas": "1.3.4",
+		"nategood/httpful": "*",
+		"pear/net_url2": "2.2.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"GlobalTechnology\\CentralAuthenticationService\\": "src/"
+		}
+	}
+}

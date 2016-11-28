@@ -1,2 +1,7 @@
-*.log
-.svn
+# Composer
+composer.phar
+
+# WebStorm, PHPStorm
+.idea/
+
+# Project

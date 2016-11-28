@@ -1,0 +1,173 @@
+[
+    {
+        "name": "jasig/phpcas",
+        "version": "1.3.4",
+        "version_normalized": "1.3.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Jasig/phpCAS.git",
+            "reference": "8c74d21630f74278270830fdbdb0c1317bce3f0a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Jasig/phpCAS/zipball/8c74d21630f74278270830fdbdb0c1317bce3f0a",
+            "reference": "8c74d21630f74278270830fdbdb0c1317bce3f0a",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.0.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~3.7.10"
+        },
+        "time": "2015-11-16 20:44:36",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "source/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Joachim Fritschi",
+                "homepage": "https://wiki.jasig.org/display/~fritschi"
+            },
+            {
+                "name": "Adam Franco",
+                "homepage": "https://wiki.jasig.org/display/~adamfranco"
+            }
+        ],
+        "description": "Provides a simple API for authenticating users against a CAS server",
+        "homepage": "https://wiki.jasig.org/display/CASC/phpCAS",
+        "keywords": [
+            "cas",
+            "jasig"
+        ]
+    },
+    {
+        "name": "pear/net_url2",
+        "version": "v2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/Net_URL2.git",
+            "reference": "43a87606daf52efe6685c92131be083143108e37"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/Net_URL2/zipball/43a87606daf52efe6685c92131be083143108e37",
+            "reference": "43a87606daf52efe6685c92131be083143108e37",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.1.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": ">=3.3.0"
+        },
+        "time": "2016-04-18 22:24:01",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "Net/URL2.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "David Coallier",
+                "email": "davidc@php.net"
+            },
+            {
+                "name": "Tom Klingenberg",
+                "email": "tkli@php.net"
+            },
+            {
+                "name": "Christian Schmidt",
+                "email": "chmidt@php.net"
+            }
+        ],
+        "description": "Class for parsing and handling URL. Provides parsing of URLs into their constituent parts (scheme, host, path etc.), URL generation, and resolving of relative URLs.",
+        "homepage": "https://github.com/pear/Net_URL2",
+        "keywords": [
+            "PEAR",
+            "net",
+            "networking",
+            "rfc3986",
+            "uri",
+            "url"
+        ]
+    },
+    {
+        "name": "nategood/httpful",
+        "version": "0.2.20",
+        "version_normalized": "0.2.20.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nategood/httpful.git",
+            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nategood/httpful/zipball/c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2015-10-26 16:11:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Httpful": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nate Good",
+                "email": "me@nategood.com",
+                "homepage": "http://nategood.com"
+            }
+        ],
+        "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
+        "homepage": "http://github.com/nategood/httpful",
+        "keywords": [
+            "api",
+            "curl",
+            "http",
+            "requests",
+            "rest",
+            "restful"
+        ]
+    }
+]
