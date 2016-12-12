@@ -136,6 +136,15 @@
 		final public function initialize_phpcas() {
 			$options = (object)$this->options;
 
+            // initialize cookie constants
+            if ( is_multisite() )
+                ms_cookie_constants();
+            wp_cookie_constants();
+
+            $params = session_get_cookie_params();
+            session_set_cookie_params( $params[ 'lifetime' ], $params[ 'path' ], $params[ 'domain' ], is_ssl(), $params[ 'httponly' ] );
+            session_name( is_ssl() ? SECURE_AUTH_COOKIE : AUTH_COOKIE );
+
 			$this->_cas_client = new \CAS_Client(
 				'2.0',
 				array_key_exists( 'CAS_PROXY_MODE', $_SERVER ),
