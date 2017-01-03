@@ -147,10 +147,10 @@
 
 			$this->_cas_client = new \CAS_Client(
 				'2.0',
-				array_key_exists( 'CAS_PROXY_MODE', $_SERVER ),
-				array_key_exists( 'CAS_HOSTNAME', $_SERVER ) ? $_SERVER[ 'CAS_HOSTNAME' ] : $options->hostname,
-				array_key_exists( 'CAS_PORT', $_SERVER ) ? $_SERVER[ 'CAS_PORT' ] : $options->port,
-				array_key_exists( 'CAS_PATH', $_SERVER ) ? $_SERVER[ 'CAS_PATH' ] : $options->uri
+                !!getenv( 'CAS_PROXY_MODE' ),
+                getenv( 'CAS_HOSTNAME' ) ? getenv( 'CAS_HOSTNAME' ) : $options->hostname,
+				getenv( 'CAS_PORT' ) ? getenv( 'CAS_PORT' ) : $options->port,
+				getenv( 'CAS_PATH' ) ? getenv( 'CAS_PATH' ) : $options->uri
 			);
 
 			//Attach a callabck for so we know when users are authenticated, this handles new user creation and profile updates
