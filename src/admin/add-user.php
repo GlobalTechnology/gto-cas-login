@@ -37,7 +37,7 @@ if ( ! empty( $messages ) ) {
 		echo '<div id="message" class="updated"><p>' . $msg . '</p></div>';
 } ?>
 
-<p><?php _e( 'Add users to your Ekko Mobile site.', TEXT_DOMAIN ); ?></p>
+<p><?php _e( 'Add users to your site.', TEXT_DOMAIN ); ?></p>
 <form action="" method="post" name="createuser" id="createuser" class="validate">
 <input name="action" type="hidden" value="createuser" />
 <?php wp_nonce_field( 'create-user', '_wpnonce_create-user' ) ?>
