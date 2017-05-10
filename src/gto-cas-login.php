@@ -121,7 +121,7 @@
 		private function register_actions_filters() {
 			add_action( 'plugins_loaded', array( &$this, 'initialize_phpcas' ), 5, 0 );
 
-			add_action( 'activate_wp_head', array( &$this, 'user_activate' ), 10, 0 );
+			add_action( 'activate_header', array( &$this, 'user_activate' ), 10, 0 );
 			add_action( 'admin_menu', array( &$this, 'remove_add_user_submenu' ), 15 ); //Remove the Add New submenu from the Users menu
 			add_filter( 'current_screen', array( &$this, 'redirect_on_add_user_screen' ), 10, 1 );
 			add_action( 'admin_menu', function () {
