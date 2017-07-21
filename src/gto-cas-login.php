@@ -51,8 +51,8 @@
 
 	//if phpCAS in not loaded, attempt to include it
 	//from the include path, otherwise load the included phpCAS
-	if ( ! class_exists( 'CAS_Client' ) ) {
-		@include_once 'CAS.php';
+	if ( ! class_exists( 'CAS_Client', false ) ) {
+	    require_once dirname(__FILE__).'/../vendor/jasig/phpcas/CAS.php';
 //		if( !class_exists( 'CAS_Client' ) )
 //			@include_once rtrim( dirname( realpath(__FILE__) ), DIRECTORY_SEPARATOR) . '/lib/phpCAS/source/CAS.php';
 	}
