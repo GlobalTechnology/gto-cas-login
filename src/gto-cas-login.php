@@ -269,7 +269,6 @@
 		final public function logout() {
 			if ( $this->_cas_client && $this->_cas_client->isSessionAuthenticated() ) {
 			    $params = array();
-                array_key_exists( 'key', $_REQUEST ) ? stripslashes( $_REQUEST[ 'key' ] ) : null;
 			    if(array_key_exists( 'redirect_to', $_REQUEST ) )
 			        $params['service'] = stripslashes( $_REQUEST[ 'redirect_to' ] );
                 $this->_cas_client->logout( $params );
