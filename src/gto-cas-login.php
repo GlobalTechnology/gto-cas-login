@@ -257,7 +257,7 @@
 
             //This was interfering with the SSO flow because it stripped the ticket tag out
             if( !is_admin() ) {
-                //return false;
+                return false;
             }
 
             if ( $login_query = parse_url( $login_url, PHP_URL_QUERY ) ) {
