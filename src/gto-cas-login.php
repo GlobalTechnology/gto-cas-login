@@ -119,6 +119,8 @@
         }
 
         private function register_actions_filters() {
+            //Check here to see if this is a backend page (is_admin), a draft preview ($_GET['preview'])
+            //or a Gravity Forms form preview ($_GET['gf_page'] = preview) and only runs these hooks on those pages
             if( is_admin() || isset($_GET['preview']) || (isset($_GET['gf_page']) && $_GET['gf_page'] === 'preview') ) {
                 add_action( 'muplugins_loaded', array( &$this, 'initialize_phpcas' ), 5, 0 );
 
@@ -253,8 +255,9 @@
             //Get the CAS login url, this has the service param in it already
             $cas_url = $this->_cas_client->getServerLoginURL();
 
+            //This was interfering with the SSO flow because it stripped the ticket tag out
             if( !is_admin() ) {
-                return false;
+                //return false;
             }
 
             if ( $login_query = parse_url( $login_url, PHP_URL_QUERY ) ) {
@@ -443,7 +446,9 @@
     CASLogin::singleton();
 }
 namespace {
-
+    
+    //Check here to see if this is a backend page (is_admin), a draft preview ($_GET['preview'])
+    //or a Gravity Forms form preview ($_GET['gf_page'] = preview) and only runs these hooks on those pages
     if( is_admin() || isset($_GET['preview']) || (isset($_GET['gf_page']) && $_GET['gf_page'] === 'preview') ) {
         /**
          * Overrides the method to prevent WordPress from setting auth cookies
