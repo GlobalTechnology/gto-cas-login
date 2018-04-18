@@ -446,9 +446,9 @@
     CASLogin::singleton();
 }
 namespace {
-    
+
     //Check here to see if this is a backend page (is_admin), a draft preview ($_GET['preview'])
-    //or a Gravity Forms form preview ($_GET['gf_page'] = preview) and only runs these hooks on those pages
+    //or a Gravity Forms form preview ($_GET['gf_page'] = preview) and only runs these functions on those pages
     if( is_admin() || isset($_GET['preview']) || (isset($_GET['gf_page']) && $_GET['gf_page'] === 'preview') ) {
         /**
          * Overrides the method to prevent WordPress from setting auth cookies
