@@ -93,6 +93,12 @@
      */
     const CLIENT = 'client';
 
+    /**
+     * CAS proxy mode
+     * @var string
+     */
+    const PROXY = 'proxy';
+
     const USER_META_GUID = 'guid';
 
     const CAS_ATTRIBUTE_GUID = 'ssoGuid';
@@ -153,7 +159,7 @@
 
       $this->_cas_client = new \CAS_Client(
         '2.0',
-        ! ! getenv( 'CAS_PROXY_MODE' ),
+        getenv( 'CAS_MODE' ) == self::PROXY,
         getenv( 'CAS_HOSTNAME' ) ? getenv( 'CAS_HOSTNAME' ) : $options->hostname,
         getenv( 'CAS_PORT' ) ? getenv( 'CAS_PORT' ) : $options->port,
         getenv( 'CAS_PATH' ) ? getenv( 'CAS_PATH' ) : $options->uri
@@ -171,11 +177,23 @@
       $this->_cas_client->handleLogoutRequests( false );
 
       if ( $this->_cas_client->isProxy() ) {
-        //Force all CAS callbacks to a specific URL
-        $this->_cas_client->setCallbackURL( $this->base_uri . 'api/callback.php' );
+        if ( 'true' === getenv( 'PGTSERVICE_ENABLED' ) ) {
+          // Use PGT Service for local development with Proxy Tickets
+          $this->_cas_client->setCallbackURL( getenv( 'PGTSERVICE_CALLBACK' ) );
+          $this->_cas_client->setPGTStorage( new ProxyTicketServiceStorage( $this->_cas_client ) );
+        } else {
+          //Force all CAS callbacks to a specific URL
+          $this->_cas_client->setCallbackURL( $this->base_uri . 'api/callback.php' );
+          error_log( $this->base_uri . 'api/callback.php' );
 
-        // Store PGT's in the database
-        $this->_cas_client->setPGTStorageFile();
+          // Initialize Redis and RedisTicketStorage
+          $redis = new \Redis();
+          $redis->connect( getenv( 'REDIS_PORT_6379_TCP_ADDR_SESSION' ), 6379, 2 );
+          $redis->setOption( \Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP );
+          $redis->setOption( \Redis::OPT_PREFIX, getenv( 'PROJECT_NAME' ) . ':PHPCAS_TICKET_STORAGE:' );
+          $redis->select( 0 );
+          $this->_cas_client->setPGTStorage( new RedisTicketStorage( $this->_cas_client, $redis ) );
+        }
 
         // Accept any proxy chain
         // TODO: at some point we may need to tighten the proxy chain security
@@ -409,6 +427,7 @@
      * Redirect the Add Existing user screen to our invite users admin page
      *
      * @param stdClass $screen Screen object
+     *
      * @return stdClass
      */
     public function redirect_on_add_user_screen( $screen ) {
@@ -473,6 +492,7 @@ namespace {
    *
    * @param string $cookie
    * @param string $scheme
+   *
    * @return bool
    */
   function wp_validate_auth_cookie( $cookie = '', $scheme = '' ) {
