@@ -75,6 +75,7 @@ class ComposerStaticInit986d4fd9cb18ce3086b9afb886cd7919
         'CAS_Request_RequestInterface' => __DIR__ . '/..' . '/jasig/phpcas/source/CAS/Request/RequestInterface.php',
         'CAS_TypeMismatchException' => __DIR__ . '/..' . '/jasig/phpcas/source/CAS/TypeMismatchException.php',
         'GlobalTechnology\\CentralAuthenticationService\\CASLogin' => __DIR__ . '/../..' . '/src/gto-cas-login.php',
+        'GlobalTechnology\\CentralAuthenticationService\\ProxyTicketServiceStorage' => __DIR__ . '/../..' . '/src/proxy-ticket/ProxyTicketServiceStorage.php',
         'GlobalTechnology\\CentralAuthenticationService\\RedisTicketStorage' => __DIR__ . '/../..' . '/src/proxy-ticket/RedisTicketStorage.php',
         'Httpful\\Bootstrap' => __DIR__ . '/..' . '/nategood/httpful/src/Httpful/Bootstrap.php',
         'Httpful\\Exception\\ConnectionErrorException' => __DIR__ . '/..' . '/nategood/httpful/src/Httpful/Exception/ConnectionErrorException.php',

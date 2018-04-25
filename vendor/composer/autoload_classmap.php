@@ -50,6 +50,7 @@ return array(
     'CAS_Request_RequestInterface' => $vendorDir . '/jasig/phpcas/source/CAS/Request/RequestInterface.php',
     'CAS_TypeMismatchException' => $vendorDir . '/jasig/phpcas/source/CAS/TypeMismatchException.php',
     'GlobalTechnology\\CentralAuthenticationService\\CASLogin' => $baseDir . '/src/gto-cas-login.php',
+    'GlobalTechnology\\CentralAuthenticationService\\ProxyTicketServiceStorage' => $baseDir . '/src/proxy-ticket/ProxyTicketServiceStorage.php',
     'GlobalTechnology\\CentralAuthenticationService\\RedisTicketStorage' => $baseDir . '/src/proxy-ticket/RedisTicketStorage.php',
     'Httpful\\Bootstrap' => $vendorDir . '/nategood/httpful/src/Httpful/Bootstrap.php',
     'Httpful\\Exception\\ConnectionErrorException' => $vendorDir . '/nategood/httpful/src/Httpful/Exception/ConnectionErrorException.php',
