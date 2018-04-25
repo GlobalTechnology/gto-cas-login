@@ -133,10 +133,13 @@
       add_action( 'admin_menu', array( &$this, 'remove_add_user_submenu' ), 15 );
       add_filter( 'current_screen', array( &$this, 'redirect_on_add_user_screen' ), 10, 1 );
       add_action( 'admin_menu', function () {
-        add_users_page( __( 'Add Users', TEXT_DOMAIN ), __( 'Add Users', TEXT_DOMAIN ), 'manage_options', 'add-user', array(
-          &$this,
-          'add_user_page'
-        ) );
+        add_users_page(
+          __( 'Add Users', TEXT_DOMAIN ),
+          __( 'Add Users', TEXT_DOMAIN ),
+          'manage_options',
+          'add-user',
+          array( &$this, 'add_user_page' )
+        );
       }, 10, 0 );
       add_action( 'admin_init', array( &$this, 'add_users_admin' ), 10, 0 );
 
