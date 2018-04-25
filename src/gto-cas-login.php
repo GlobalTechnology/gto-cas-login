@@ -131,6 +131,7 @@
 
       //Remove the Add New submenu from the Users menu
       add_action( 'admin_menu', array( &$this, 'remove_add_user_submenu' ), 15 );
+      add_action( 'network_admin_menu', array( &$this, 'remove_add_user_submenu' ), 15 );
       add_filter( 'current_screen', array( &$this, 'redirect_on_add_user_screen' ), 10, 1 );
       add_action( 'admin_menu', function () {
         add_users_page(
@@ -141,6 +142,19 @@
           array( &$this, 'add_user_page' )
         );
       }, 10, 0 );
+
+      // Remove 'Add New' user button from network admin by denying 'create_users' capability on the page.
+      add_action( 'in_admin_header', function () {
+        if ( 'users-network' === get_current_screen()->id ) {
+          add_filter( 'map_meta_cap', function ( $caps ) {
+            if ( in_array( 'create_users', $caps ) ) {
+              return array( 'do_not_allow' );
+            }
+
+            return $caps;
+          }, 10, 1 );
+        }
+      } );
       add_action( 'admin_init', array( &$this, 'add_users_admin' ), 10, 0 );
 
       add_filter( 'login_url', array( &$this, 'login_url' ), 0, 1 );
