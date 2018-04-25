@@ -187,7 +187,6 @@
         } else {
           //Force all CAS callbacks to a specific URL
           $this->_cas_client->setCallbackURL( $this->base_uri . 'api/callback.php' );
-          error_log( $this->base_uri . 'api/callback.php' );
 
           // Initialize Redis and RedisTicketStorage
           $redis = new \Redis();
