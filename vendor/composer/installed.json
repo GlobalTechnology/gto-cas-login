@@ -21,7 +21,7 @@
         "require-dev": {
             "phpunit/phpunit": "~3.7.10"
         },
-        "time": "2015-11-16 20:44:36",
+        "time": "2015-11-16T20:44:36+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -56,6 +56,58 @@
         ]
     },
     {
+        "name": "nategood/httpful",
+        "version": "0.2.20",
+        "version_normalized": "0.2.20.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nategood/httpful.git",
+            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nategood/httpful/zipball/c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2015-10-26T16:11:30+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Httpful": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nate Good",
+                "email": "me@nategood.com",
+                "homepage": "http://nategood.com"
+            }
+        ],
+        "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
+        "homepage": "http://github.com/nategood/httpful",
+        "keywords": [
+            "api",
+            "curl",
+            "http",
+            "requests",
+            "rest",
+            "restful"
+        ]
+    },
+    {
         "name": "pear/net_url2",
         "version": "v2.2.1",
         "version_normalized": "2.2.1.0",
@@ -76,7 +128,7 @@
         "require-dev": {
             "phpunit/phpunit": ">=3.3.0"
         },
-        "time": "2016-04-18 22:24:01",
+        "time": "2016-04-18T22:24:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -116,58 +168,6 @@
             "rfc3986",
             "uri",
             "url"
-        ]
-    },
-    {
-        "name": "nategood/httpful",
-        "version": "0.2.20",
-        "version_normalized": "0.2.20.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nategood/httpful.git",
-            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nategood/httpful/zipball/c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
-            "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
-            "shasum": ""
-        },
-        "require": {
-            "ext-curl": "*",
-            "php": ">=5.3"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2015-10-26 16:11:30",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Httpful": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nate Good",
-                "email": "me@nategood.com",
-                "homepage": "http://nategood.com"
-            }
-        ],
-        "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
-        "homepage": "http://github.com/nategood/httpful",
-        "keywords": [
-            "api",
-            "curl",
-            "http",
-            "requests",
-            "rest",
-            "restful"
         ]
     }
 ]
