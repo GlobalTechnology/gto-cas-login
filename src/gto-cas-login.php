@@ -509,7 +509,7 @@ namespace {
    * @param string $cookie
    * @param string $scheme
    *
-   * @return bool
+   * @return bool|int
    */
   function wp_validate_auth_cookie( $cookie = '', $scheme = '' ) {
     // determine which cookie is being used for the session
@@ -537,6 +537,7 @@ namespace {
       $authenticated = false;
       ob_end_clean();
     }
+    $logged_in = false;
     if ( $authenticated && $cas_client->hasAttribute( \GlobalTechnology\CentralAuthenticationService\CASLogin::CAS_ATTRIBUTE_GUID ) ) {
       // get the guid for the current user from CAS
       $guid = strtoupper( $cas_client->getAttribute( \GlobalTechnology\CentralAuthenticationService\CASLogin::CAS_ATTRIBUTE_GUID ) );
@@ -545,11 +546,16 @@ namespace {
       $user = \GlobalTechnology\CentralAuthenticationService\CASLogin::singleton()->get_user_by_guid( $guid );
 
       // return the user id or false if the user doesn't exist
-      return is_null( $user ) ? false : $user->ID;
+      $logged_in = is_null( $user ) ? false : $user->ID;
     }
 
-    // not a valid CAS session, so return false
-    return false;
+    if ( false === $logged_in ) {
+      setcookie( 'logged_in_cookie', ' ', time() - YEAR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN );
+    } else {
+      setcookie( 'logged_in_cookie', 'logged_in', time() + 2 * HOUR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, true, true );
+    }
+
+    return $logged_in;
   }
 
 }
