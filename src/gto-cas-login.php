@@ -550,9 +550,9 @@ namespace {
     }
 
     if ( false === $logged_in ) {
-      setcookie( 'logged_in_cookie', ' ', time() - YEAR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN );
+      setcookie( 'logged_in_cookie', ' ', time() - YEAR_IN_SECONDS, COOKIEPATH, ltrim(COOKIE_DOMAIN, '.') );
     } else {
-      setcookie( 'logged_in_cookie', 'logged_in', time() + 2 * HOUR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, true, true );
+      setcookie( 'logged_in_cookie', 'logged_in', time() + 2 * HOUR_IN_SECONDS, COOKIEPATH, ltrim(COOKIE_DOMAIN, '.'), true, true );
     }
 
     return $logged_in;
