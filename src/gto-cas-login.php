@@ -280,6 +280,7 @@
           wp_update_user( $args );
         }
       }
+      do_action('cas_user_logged_in', $user, $this );
     }
 
     /**
