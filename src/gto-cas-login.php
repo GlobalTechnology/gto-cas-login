@@ -263,11 +263,14 @@
         $first_name = array_key_exists( self::CAS_ATTRIBUTE_FIRST_NAME, $attrs ) ? trim( (string) $attrs[ self::CAS_ATTRIBUTE_FIRST_NAME ] ) : null;
         $last_name  = array_key_exists( self::CAS_ATTRIBUTE_LAST_NAME, $attrs ) ? trim( (string) $attrs[ self::CAS_ATTRIBUTE_LAST_NAME ] ) : null;
         $args       = array();
-        if ( empty( $user->first_name ) && $first_name ) {
+        if ( $first_name ) {
           $args['first_name'] = $first_name;
         }
-        if ( empty( $user->last_name ) && $last_name ) {
+        if ( $last_name ) {
           $args['last_name'] = $last_name;
+        }
+        if ( $email !== $user->user_email ) {
+          $args['user_email'] = $email;
         }
         if ( empty( $user->display_name ) && $first_name && $last_name ) {
           $args['display_name'] = "{$first_name} {$last_name}";
