@@ -280,7 +280,10 @@
         }
         if ( ! empty( $args ) ) {
           $args['ID'] = $user->ID;
-          wp_update_user( $args );
+          // Defer updating user until 'init'
+          add_action('init', function() use (&$args) {
+            wp_update_user( $args );
+          }, 15, 0);
         }
       }
       do_action('cas_user_logged_in', $user, $this );
