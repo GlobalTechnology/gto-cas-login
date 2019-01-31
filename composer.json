@@ -8,7 +8,7 @@
 		}
 	],
 	"require": {
-		"jasig/phpcas": "1.3.4",
+		"jasig/phpcas": "1.3.6",
 		"nategood/httpful": "*",
 		"pear/net_url2": "2.2.1"
 	},
