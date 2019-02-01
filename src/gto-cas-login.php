@@ -127,7 +127,11 @@
 
     private function register_actions_filters() {
       add_action( 'muplugins_loaded', array( &$this, 'initialize_phpcas' ), 5, 0 );
-      add_action( 'activate_header', array( &$this, 'user_activate' ), 10, 0 );
+
+      // wp-activate.php removed hook to override it, so now we need to look at url to override
+      if (array_key_exists( 'key', $_REQUEST ) && stripos($_SERVER['REQUEST_URI'], 'wp-activate.php') !== false) {
+        add_action ( 'wp', array( &$this, 'user_activate' ), 10, 0 );
+      }
 
       //Remove the Add New submenu from the Users menu
       add_action( 'admin_menu', array( &$this, 'remove_add_user_submenu' ), 15 );
@@ -441,6 +445,7 @@
       }
 
       wp_redirect( get_site_url( $blog_id ) );
+      exit();
     }
 
     /**
