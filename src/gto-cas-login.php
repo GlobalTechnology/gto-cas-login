@@ -57,6 +57,8 @@
 //			@include_once rtrim( dirname( realpath(__FILE__) ), DIRECTORY_SEPARATOR) . '/lib/phpCAS/source/CAS.php';
   }
 
+  require_once dirname( __FILE__ ) . '/../vendor/cmb2/cmb2/init.php';
+
   const TEXT_DOMAIN = 'gtocas';
 
   const VERSION = '0.1';
@@ -105,6 +107,10 @@
     const CAS_ATTRIBUTE_FIRST_NAME = 'firstName';
     const CAS_ATTRIBUTE_LAST_NAME = 'lastName';
 
+    const NETWORK_OPTIONS = 'gtocas_network_options';
+    const OPTIONS = 'gtocas_options';
+    const OPTION_HOSTNAME = 'cas_hostname';
+
     public $base_uri;
 
     /**
@@ -129,8 +135,8 @@
       add_action( 'muplugins_loaded', array( &$this, 'initialize_phpcas' ), 5, 0 );
 
       // wp-activate.php removed hook to override it, so now we need to look at url to override
-      if (array_key_exists( 'key', $_REQUEST ) && stripos($_SERVER['REQUEST_URI'], 'wp-activate.php') !== false) {
-        add_action ( 'wp', array( &$this, 'user_activate' ), 10, 0 );
+      if ( array_key_exists( 'key', $_REQUEST ) && stripos( $_SERVER['REQUEST_URI'], 'wp-activate.php' ) !== false ) {
+        add_action( 'wp', array( &$this, 'user_activate' ), 10, 0 );
       }
 
       //Remove the Add New submenu from the Users menu
@@ -163,6 +169,10 @@
 
       add_filter( 'login_url', array( &$this, 'login_url' ), 0, 1 );
       add_action( 'wp_logout', array( &$this, 'logout' ), 0, 0 );
+
+      // Options pages
+      add_action( 'cmb2_admin_init', array( $this, 'network_options_page' ), 10, 0 );
+      add_action( 'cmb2_admin_init', array( $this, 'admin_options_page' ), 12, 0 );
     }
 
     final public function initialize_phpcas() {
@@ -181,7 +191,7 @@
       $this->_cas_client = new \CAS_Client(
         '2.0',
         getenv( 'CAS_MODE' ) == self::PROXY,
-        getenv( 'CAS_HOSTNAME' ) ? getenv( 'CAS_HOSTNAME' ) : $options->hostname,
+        $this->cas_hostname(),
         getenv( 'CAS_PORT' ) ? getenv( 'CAS_PORT' ) : $options->port,
         getenv( 'CAS_PATH' ) ? getenv( 'CAS_PATH' ) : $options->uri
       );
@@ -287,7 +297,7 @@
           wp_update_user( $args );
         }
       }
-      do_action('cas_user_logged_in', $user, $this );
+      do_action( 'cas_user_logged_in', $user, $this );
     }
 
     /**
@@ -495,6 +505,90 @@
       }
     }
 
+    final public function network_options_page() {
+      $cmb_options = new_cmb2_box( array(
+        'id'              => self::NETWORK_OPTIONS . '_admin',
+        'title'           => esc_html__( 'Sign In Settings (CAS)', 'gtocas' ),
+        'object_types'    => array( 'options-page' ),
+        'option_key'      => self::NETWORK_OPTIONS,
+        'parent_slug'     => 'settings.php',
+        'capability'      => 'manage_network',
+        'admin_menu_hook' => 'network_admin_menu'
+      ) );
+
+      $default_hostname = getenv( 'CAS_HOSTNAME' );
+
+      $cmb_options->add_field( array(
+        'name'             => __( 'CAS Hostname', 'gtocas' ),
+        'desc'             => __( 'Domain name to use for sign-in', 'gtocas' ),
+        'id'               => self::OPTION_HOSTNAME,
+        'type'             => 'select',
+        'show_option_none' => sprintf( __( 'Inherited (%s)', 'gtocas' ), $default_hostname ),
+        'options'          => array(
+          'signon.cru.org'      => __( 'signon.cru.org', 'gtocas' ),
+          'signon.relaysso.org' => __( 'signon.relaysso.org', 'gtocas' ),
+          'thekey.me'           => __( 'thekey.me', 'gtocas' ),
+        )
+      ) );
+
+      $cmb_options->add_field( array(
+        'name'    => 'Allow Override',
+        'desc'    => __( 'Allow admins to override this setting per site.', 'gtocas' ),
+        'id'      => 'allow_override',
+        'type'    => 'checkbox',
+        'default' => 0
+      ) );
+    }
+
+    final public function admin_options_page() {
+      // Use get_site_option() here, cmb2_get_option isn't fully initialized yet.
+      $network_options = get_site_option( self::NETWORK_OPTIONS, array() );
+      // Show admin page to admins if allow_override is set, otherwise network admins only.
+      $cap = ( array_key_exists( 'allow_override', $network_options ) &&
+               'on' === $network_options['allow_override'] ) ? 'manage_options' : 'manage_network';
+
+      $cmb_options = new_cmb2_box( array(
+        'id'           => self::OPTIONS . '_admin',
+        'title'        => esc_html__( 'Sign In Settings (CAS)', 'gtocas' ),
+        'object_types' => array( 'options-page' ),
+        'option_key'   => self::OPTIONS,
+        'parent_slug'  => 'options-general.php',
+        'capability'   => $cap
+      ) );
+
+      // Default to network setting, or ENV if not set.
+      $default_hostname = array_key_exists( self::OPTION_HOSTNAME, $network_options ) ?
+        $network_options[ self::OPTION_HOSTNAME ] : getenv( 'CAS_HOSTNAME' );
+
+      $cmb_options->add_field( array(
+        'name'             => __( 'CAS Hostname', 'gtocas' ),
+        'desc'             => __( 'Domain name to use for sign-in', 'gtocas' ),
+        'id'               => self::OPTION_HOSTNAME,
+        'type'             => 'select',
+        'show_option_none' => sprintf( __( 'Inherited (%s)', 'gtocas' ), $default_hostname ),
+        'options'          => array(
+          'signon.cru.org'      => __( 'signon.cru.org', 'gtocas' ),
+          'signon.relaysso.org' => __( 'signon.relaysso.org', 'gtocas' ),
+          'thekey.me'           => __( 'thekey.me', 'gtocas' ),
+        )
+      ) );
+    }
+
+    final private function cas_hostname() {
+      $network_options = get_site_option( self::NETWORK_OPTIONS, array() );
+      $options         = get_option( self::OPTIONS, array() );
+
+      // Prefer site option over network, default to ENV.
+      if ( array_key_exists( self::OPTION_HOSTNAME, $options ) ) {
+        return $options[ self::OPTION_HOSTNAME ];
+      } elseif ( array_key_exists( self::OPTION_HOSTNAME, $network_options ) ) {
+        return $network_options[ self::OPTION_HOSTNAME ];
+      } elseif ( getenv( 'CAS_HOSTNAME' ) ) {
+        return getenv( 'CAS_HOSTNAME' );
+      }
+
+      return $options->hostname;
+    }
   }
 
   CASLogin::singleton();
@@ -559,9 +653,9 @@ namespace {
     }
 
     if ( false === $logged_in ) {
-      setcookie( 'logged_in_cookie', ' ', time() - YEAR_IN_SECONDS, COOKIEPATH, ltrim(COOKIE_DOMAIN, '.') );
+      setcookie( 'logged_in_cookie', ' ', time() - YEAR_IN_SECONDS, COOKIEPATH, ltrim( COOKIE_DOMAIN, '.' ) );
     } else {
-      setcookie( 'logged_in_cookie', 'logged_in', time() + WEEK_IN_SECONDS, COOKIEPATH, ltrim(COOKIE_DOMAIN, '.'), true, true );
+      setcookie( 'logged_in_cookie', 'logged_in', time() + WEEK_IN_SECONDS, COOKIEPATH, ltrim( COOKIE_DOMAIN, '.' ), true, true );
     }
 
     return $logged_in;
