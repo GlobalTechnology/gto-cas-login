@@ -61,7 +61,7 @@
 
   const TEXT_DOMAIN = 'gtocas';
 
-  const VERSION = '0.1';
+  const VERSION     = '0.1';
 
   class CASLogin {
     /**
@@ -110,6 +110,7 @@
     const NETWORK_OPTIONS = 'gtocas_network_options';
     const OPTIONS = 'gtocas_options';
     const OPTION_HOSTNAME = 'cas_hostname';
+    const META_REQUIRES_LOGIN = 'gtocas_requires_login';
 
     public $base_uri;
 
@@ -173,6 +174,13 @@
       // Options pages
       add_action( 'cmb2_admin_init', array( $this, 'network_options_page' ), 10, 0 );
       add_action( 'cmb2_admin_init', array( $this, 'admin_options_page' ), 12, 0 );
+
+      // Requires Login meta
+      add_action( 'init', array( $this, 'register_meta' ) );
+      add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts' ) );
+      add_action( 'post_submitbox_misc_actions', array( $this, 'requires_login_classic' ), 10, 1 );
+      add_action( 'save_post', array( $this, 'save_requires_login_meta' ) );
+      add_action( 'wp', array( $this, 'enforce_requires_login' ) );
     }
 
     final public function initialize_phpcas() {
@@ -588,6 +596,68 @@
       }
 
       return $options->hostname;
+    }
+
+
+    public function enqueue_scripts() {
+      if ( is_admin() && get_post_type() === 'page' ) {
+        wp_enqueue_script( 'gtocas-requires-login' );
+      }
+    }
+
+    public function register_meta() {
+      register_meta( 'post', self::META_REQUIRES_LOGIN, array(
+        'object_subtype' => 'page',
+        'show_in_rest'   => true,
+        'single'         => true,
+        'type'           => 'boolean',
+      ) );
+
+      wp_register_script(
+        'gtocas-requires-login',
+        plugins_url( 'js/require-login.js', __FILE__ ),
+        array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-compose' )
+      );
+    }
+
+    final public function requires_login_classic( $post ) {
+      if ( $post->post_type !== 'page' ) {
+        return;
+      }
+      $value = get_post_meta( $post->ID, self::META_REQUIRES_LOGIN, true );
+      $nonce = implode( '_', array( 'nonce', self::META_REQUIRES_LOGIN ) )
+      ?>
+        <div class="misc-pub-section misc-pub-section-last">
+          <?php wp_nonce_field( $nonce . $post->ID, $nonce ); ?>
+            <label><input type="checkbox" value="1" <?= checked( $value ) ?>
+                          name="<?= self::META_REQUIRES_LOGIN ?>"/><?php _e( 'Requires Login', 'gtocas' ); ?></label>
+        </div>
+      <?php
+    }
+
+    final public function save_requires_login_meta( $post_id ) {
+      if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+      }
+
+      $nonce = implode( '_', array( 'nonce', self::META_REQUIRES_LOGIN ) );
+      if ( ! isset( $_POST[ $nonce ] ) || ! wp_verify_nonce( $_POST[ $nonce ], $nonce . $post_id ) ) {
+        return;
+      }
+
+      if ( isset( $_POST[ self::META_REQUIRES_LOGIN ] ) ) {
+        error_log( 'UPDATE' );
+        update_post_meta( $post_id, self::META_REQUIRES_LOGIN, 1 );
+      } else {
+        error_log( 'DELETE' );
+        delete_post_meta( $post_id, self::META_REQUIRES_LOGIN );
+      }
+    }
+
+    final public function enforce_requires_login() {
+      if ( is_page() && '1' === get_post_meta( get_the_ID(), self::META_REQUIRES_LOGIN, true ) ) {
+        auth_redirect();
+      }
     }
   }
 
