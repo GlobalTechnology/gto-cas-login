@@ -600,14 +600,19 @@
 
 
     public function enqueue_scripts() {
-      if ( is_admin() && get_post_type() === 'page' ) {
+      if ( is_admin() && in_array(get_post_type(), array('page', 'post'))) {
         wp_enqueue_script( 'gtocas-requires-login' );
       }
     }
 
     public function register_meta() {
-      register_meta( 'post', self::META_REQUIRES_LOGIN, array(
-        'object_subtype' => 'page',
+      register_post_meta( 'page', self::META_REQUIRES_LOGIN, array(
+        'show_in_rest'   => true,
+        'single'         => true,
+        'type'           => 'boolean',
+      ) );
+
+      register_post_meta( 'post', self::META_REQUIRES_LOGIN, array(
         'show_in_rest'   => true,
         'single'         => true,
         'type'           => 'boolean',
@@ -621,7 +626,7 @@
     }
 
     final public function requires_login_classic( $post ) {
-      if ( $post->post_type !== 'page' ) {
+      if ( !in_array( $post->post_type, array( 'page', 'post' ) ) ) {
         return;
       }
       $value = get_post_meta( $post->ID, self::META_REQUIRES_LOGIN, true );
@@ -655,7 +660,7 @@
     }
 
     final public function enforce_requires_login() {
-      if ( is_page() && '1' === get_post_meta( get_the_ID(), self::META_REQUIRES_LOGIN, true ) ) {
+      if ( is_singular(array( 'page', 'post' )) && '1' === get_post_meta( get_the_ID(), self::META_REQUIRES_LOGIN, true ) ) {
         auth_redirect();
       }
     }
