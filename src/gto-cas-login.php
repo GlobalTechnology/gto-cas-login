@@ -226,10 +226,10 @@
 
           // Initialize Redis and RedisTicketStorage
           $redis = new \Redis();
-          $redis->connect( getenv( 'REDIS_PORT_6379_TCP_ADDR_SESSION' ), 6379, 2 );
+          $redis->connect( getenv( 'SESSION_REDIS_HOST' ), getenv( 'SESSION_REDIS_PORT' ), 2 );
           $redis->setOption( \Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP );
-          $redis->setOption( \Redis::OPT_PREFIX, getenv( 'PROJECT_NAME' ) . ':PHPCAS_TICKET_STORAGE:' );
-          $redis->select( 0 );
+          $redis->setOption( \Redis::OPT_PREFIX, 'PHPCAS_TICKET_STORAGE:' );
+          $redis->select( getenv( 'SESSION_REDIS_DB_INDEX' ) );
           $this->_cas_client->setPGTStorage( new RedisTicketStorage( $this->_cas_client, $redis ) );
         }
 
